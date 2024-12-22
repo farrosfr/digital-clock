@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegant Digital Clock</title>
+    <style>
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            color: white;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .clock-container {
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            animation: slideIn 1s ease-out;
+        }
+
+        .clock {
+            font-size: 5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .date {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            animation: fadeIn 1s ease;
+        }
+
+        select {
+            font-size: 1rem;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        select option {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="clock-container">
+        <div class="clock" id="clock"></div>
+        <div class="date" id="date"></div>
+        <div class="options">
+            <div>
+                <label for="gmt">GMT Offset:</label>
+                <select id="gmt">
+                    <!-- GMT offsets with location -->
+                    <option value="-12">GMT -12 - Baker Island</option>
+                    <option value="-11">GMT -11 - American Samoa</option>
+                    <option value="-10">GMT -10 - Hawaii</option>
+                    <option value="-9">GMT -9 - Alaska</option>
+                    <option value="-8">GMT -8 - Los Angeles</option>
+                    <option value="-7">GMT -7 - Denver</option>
+                    <option value="-6">GMT -6 - Mexico City</option>
+                    <option value="-5">GMT -5 - New York</option>
+                    <option value="-4">GMT -4 - Caracas</option>
+                    <option value="-3">GMT -3 - Buenos Aires</option>
+                    <option value="-2">GMT -2 - Mid-Atlantic</option>
+                    <option value="-1">GMT -1 - Azores</option>
+                    <option value="0" selected>GMT 0 - London</option>
+                    <option value="1">GMT +1 - Central Europe</option>
+                    <option value="2">GMT +2 - Cairo</option>
+                    <option value="3">GMT +3 - Moscow</option>
+                    <option value="4">GMT +4 - Abu Dhabi</option>
+                    <option value="5">GMT +5 - Islamabad</option>
+                    <option value="6">GMT +6 - Almaty</option>
+                    <option value="7">GMT +7 - Jakarta</option>
+                    <option value="8">GMT +8 - Singapore</option>
+                    <option value="9">GMT +9 - Tokyo</option>
+                    <option value="10">GMT +10 - Sydney</option>
+                    <option value="11">GMT +11 - Solomon Islands</option>
+                    <option value="12">GMT +12 - Fiji</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <script>
+        function updateClock() {
+            const clockElement = document.getElementById('clock');
+            const dateElement = document.getElementById('date');
+            const gmtOffset = parseInt(document.getElementById('gmt').value);
+
+            const now = new Date();
+            const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+            const localTime = new Date(utc + (gmtOffset * 3600000));
+
+            const hours = String(localTime.getHours()).padStart(2, '0');
+            const minutes = String(localTime.getMinutes()).padStart(2, '0');
+            const seconds = String(localTime.getSeconds()).padStart(2, '0');
+
+            clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+            dateElement.textContent = localTime.toDateString();
+        }
+
+        document.getElementById('gmt').addEventListener('change', updateClock);
+
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
